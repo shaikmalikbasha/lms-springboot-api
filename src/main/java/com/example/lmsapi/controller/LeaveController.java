@@ -14,7 +14,7 @@ public class LeaveController {
     LeaveService leaveService;
 
     @GetMapping(value = "/leave/{id}")
-    public List<Leave> getLeaveBuyEmployeeId(@PathVariable(name = "id") Long empId) {
+    public List<Leave> getLeaveByEmployeeId(@PathVariable(name = "id") Long empId) {
         return leaveService.getLeaveHistoryByEmployeeId(empId);
     }
 

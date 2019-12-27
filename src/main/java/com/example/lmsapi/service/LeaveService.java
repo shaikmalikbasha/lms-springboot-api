@@ -17,7 +17,7 @@ public class LeaveService {
     LeaveRepository leaveRepository;
 
     public List<Leave> getLeaveHistoryByEmployeeId(Long empId) {
-        return leaveRepository.findLeaveByEmpId(empId);
+        return leaveRepository.getLeaveHistoryByEmpId(empId);
     }
 
     public Leave createLeaveByEmployee(Leave leave){

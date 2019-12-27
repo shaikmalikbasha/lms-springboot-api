@@ -24,7 +24,7 @@ public class Leave {
     @Column(name = "reason")
     private String reason;
 
-    @Column(name = "leaves_available", nullable = true)
+    @Column(name = "leaves_available",columnDefinition = "integer default 12")
     private int leavesAvailable;
 
     @Column(name = "leaves_used", nullable = true)

@@ -13,4 +13,19 @@ public interface LeaveRepository extends JpaRepository<Leave, Long>, CrudReposit
 
     @Query(value = "SELECT l FROM Leave l WHERE l.empId = :empId")
     List<Leave> getLeaveHistoryByEmpId(Long empId);
+
+    @Query(value = "SELECT MIN(l.leavesAvailable) FROM Leave l WHERE l.empId = :empId")
+    int getAvailableLeavesByEmpId(Long empId);
+
+    @Query(value = "SELECT l.leavesAvailable - (SELECT SUM(l.leavesUsed) FROM Leave l WHERE l.empId = :empId) FROM Leave l WHERE l.empId = :empId")
+    int getAvailableLeavesofEmployee(Long empId);
+
+//    @Query(value = "SELECT l.leavesAvailable FROM Leave l WHERE l.empId = :empId ORDER BY l.leavesAvailable ASC LIMIT 1")
+//    int getAvailableLeavesofEmployee(Long empId);
+
+//    @Query(value = "SELECT MIN(l.leavesAvailable) FROM Leave l WHERE l.empId = :empId")
+//    int getAvailableLeavesofEmployee(Long empId);
+
+    @Query(value = "SELECT SUM(l.leavesUsed) FROM Leave l WHERE l.empId = :empId")
+    int getUsedLeavesofEmployee(Long empId);
 }

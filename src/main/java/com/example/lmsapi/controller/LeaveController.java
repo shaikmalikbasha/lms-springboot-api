@@ -13,13 +13,20 @@ public class LeaveController {
     @Autowired
     LeaveService leaveService;
 
-    @GetMapping(value = "/leave/{id}")
+    @GetMapping(value = "/leave/emp/{id}")
     public List<Leave> getLeaveByEmployeeId(@PathVariable(name = "id") Long empId) {
-        return leaveService.getLeaveHistoryByEmployeeId(empId);
+        return leaveService.getLeaveHistoryByEmployeeId(empId); // Return Leaves History of Employee by using ID
+    }
+
+    @GetMapping(value = "/leave/checkleaves/{id}")
+    public int getAvailableLeaves(@PathVariable(name = "id") Long empId) {
+        return leaveService.getAvailableLeavesByEmpId(empId);
     }
 
     @PostMapping(value = "/leave")
     public Leave createLeave(@RequestBody Leave leave) {
         return leaveService.createLeaveByEmployee(leave);
     }
+
+//    public Leave getLeaveStatus
 }

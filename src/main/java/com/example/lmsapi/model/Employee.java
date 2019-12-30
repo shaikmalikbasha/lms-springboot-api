@@ -29,6 +29,9 @@ public class Employee {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "delete_flag")
+    private int delete_flag = 0;
+
     public Employee() {
     }
 
@@ -72,4 +75,11 @@ public class Employee {
         this.password = password;
     }
 
+    public int getDelete_flag() {
+        return delete_flag;
+    }
+
+    public void setDelete_flag(int delete_flag) {
+        this.delete_flag = delete_flag;
+    }
 }

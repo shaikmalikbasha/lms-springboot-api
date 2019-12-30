@@ -5,6 +5,7 @@ import com.example.lmsapi.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,13 +20,23 @@ public class LeaveController {
     }
 
     @GetMapping(value = "/leave/checkleaves/{id}")
-    public int getAvailableLeaves(@PathVariable(name = "id") Long empId) {
+    public Integer getAvailableLeaves(@PathVariable(name = "id") Long empId) {
         return leaveService.getAvailableLeavesByEmpId(empId);
     }
 
     @PostMapping(value = "/leave")
-    public Leave createLeave(@RequestBody Leave leave) {
+    public Leave createLeave(@Valid @RequestBody Leave leave) {
         return leaveService.createLeaveByEmployee(leave);
+    }
+
+    @PutMapping(value = "/leave/{id}")
+    public Leave updateLeaveByLeaveId(@PathVariable(name = "id") Long leaveId,@Valid @RequestBody Leave leave) {
+        return leaveService.updateLeaveByLeaveId(leaveId, leave);
+    }
+
+    @DeleteMapping(value = "/leave/{id}")
+    public boolean cancelLeave(@PathVariable(name = "id") Long leaveId){
+        return leaveService.deleteLeaveById(leaveId);
     }
 
 //    public Leave getLeaveStatus

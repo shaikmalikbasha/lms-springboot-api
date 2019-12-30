@@ -1,6 +1,8 @@
 package com.example.lmsapi.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -12,23 +14,27 @@ public class Leave {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     @Column(name = "emp_id")
     private Long empId;
 
+    @NotNull
     @Column(name = "from_date")
     private Date fromDate;
 
+    @NotNull
     @Column(name = "to_date")
     private Date toDate;
 
+    @NotNull
     @Column(name = "reason")
     private String reason;
 
-    @Column(name = "leaves_available",columnDefinition = "integer default 12")
-    private int leavesAvailable;
+    @Column(name = "leaves_available")
+    private Integer leavesAvailable;
 
-    @Column(name = "leaves_used", nullable = true)
-    private int leavesUsed;
+    @Column(name = "leaves_used")
+    private Integer leavesUsed;
 
     public Leave() {
     }
@@ -73,7 +79,7 @@ public class Leave {
         this.reason = reason;
     }
 
-    public int getLeavesAvailable() {
+    public Integer getLeavesAvailable() {
         return leavesAvailable;
     }
 
@@ -81,7 +87,7 @@ public class Leave {
         this.leavesAvailable = leavesAvailable;
     }
 
-    public int getLeavesUsed() {
+    public Integer getLeavesUsed() {
         return leavesUsed;
     }
 

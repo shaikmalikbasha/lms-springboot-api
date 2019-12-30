@@ -34,6 +34,11 @@ public class LeaveController {
         return leaveService.updateLeaveByLeaveId(leaveId, leave);
     }
 
+    @PutMapping(value = "/leave/status/{id}")
+    public Leave updateLeaveStatusById(@PathVariable(name = "id") Long id,@RequestBody Leave leave) {
+        return leaveService.updateLeaveStatusById(id, leave);
+    }
+
     @DeleteMapping(value = "/leave/{id}")
     public boolean cancelLeave(@PathVariable(name = "id") Long leaveId){
         return leaveService.deleteLeaveById(leaveId);

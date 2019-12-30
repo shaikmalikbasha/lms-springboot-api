@@ -1,6 +1,5 @@
 package com.example.lmsapi.service;
 
-
 import com.example.lmsapi.exception.LeaveException;
 import com.example.lmsapi.model.Leave;
 import com.example.lmsapi.repository.LeaveRepository;
@@ -34,21 +33,29 @@ public class LeaveService {
 
     public Leave updateLeaveByLeaveId(Long leaveId, Leave leave) throws LeaveException {
         Leave oldLeave = leaveRepository.findById(leaveId).orElseThrow(() -> new LeaveException("Leave not found"));
-        Leave newLeave = validateLeave(leave);
-        if (oldLeave.getFromDate() != null) {
-            oldLeave.setFromDate(newLeave.getFromDate());
+        validateLeave(leave);
+        if (leave.getFromDate() != null) {
+            oldLeave.setFromDate(leave.getFromDate());
         }
-        if (oldLeave.getToDate() != null) {
-            oldLeave.setToDate(newLeave.getToDate());
+        if (leave.getToDate() != null) {
+            oldLeave.setToDate(leave.getToDate());
         }
-        if (oldLeave.getReason() != null) {
-            oldLeave.setReason(newLeave.getReason());
+        if (leave.getReason() != null) {
+            oldLeave.setReason(leave.getReason());
         }
-        oldLeave.setLeavesAvailable(newLeave.getLeavesAvailable());
-        oldLeave.setLeavesUsed(newLeave.getLeavesUsed());
+        if (leave.getLeavesAvailable() != null) {
+            oldLeave.setLeavesAvailable(leave.getLeavesAvailable());
+        }
+        if (leave.getLeavesUsed() != null) {
+            System.out.println("Leaves Used: " + leave.getLeavesUsed());
+            oldLeave.setLeavesUsed(leave.getLeavesUsed());
+        }
         return leaveRepository.save(oldLeave);
     }
 
+    public Leave getLeaveByLeaveId(Long leaveId) throws LeaveException {
+        return leaveRepository.findById(leaveId).orElseThrow(() -> new LeaveException(leaveId));
+    }
 
     public Leave validateLeave(Leave leave) {
         leave.setFromDate(leave.getFromDate());
@@ -77,25 +84,13 @@ public class LeaveService {
         if (diffDays >= MAX_DAYS) {
             throw new LeaveException("You cannot applied these many (" + diffDays + ") days at a time.");
         }
- /*
-        if (leave.getLeavesUsed() == null) {
+        if (!leave.getLeaveStatus().equals("Pending")) {
             leave.setLeavesUsed((int) (leavesUsed + diffDays));
-        } else {
-            System.out.println("Before : leave.getLeavesUsed() : " + leave.getLeavesUsed());
-            leave.setLeavesUsed(leave.getLeavesUsed());
-            System.out.println("After : leave.getLeavesUsed() : " + leave.getLeavesUsed());
-        }
-        if (leave.getLeavesAvailable() == null) {
             leave.setLeavesAvailable((int) (leavesAvailable - diffDays));
         } else {
-            System.out.println("Before : leave.getLeavesAvailable() : " + leave.getLeavesAvailable());
-            leave.setLeavesAvailable(leave.getLeavesAvailable());
-            System.out.println("After : leave.getLeavesAvailable() : " + leave.getLeavesAvailable());
+            leave.setLeavesUsed(leavesUsed - leave.getLeavesUsed());
+            leave.setLeavesAvailable(leavesAvailable);
         }
-
-  */
-        leave.setLeavesUsed((int) (leavesUsed + diffDays));
-        leave.setLeavesAvailable((int) (leavesAvailable - diffDays));
         return leave;
     }
 
@@ -116,4 +111,15 @@ public class LeaveService {
         return response;
     }
 
+    public Leave updateLeaveStatusById(Long id, Leave leave) {
+        Leave l = this.getLeaveByLeaveId(id);
+        if (leave.getLeaveStatus() != null) {
+            if (leave.getLeaveStatus().equals("Approved")) {
+                l.setLeaveStatus("Approved");
+            } else {
+                l.setLeaveStatus("Cancelled");
+            }
+        }
+        return leaveRepository.save(l);
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.lmsapi.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -35,6 +34,9 @@ public class Leave {
 
     @Column(name = "leaves_used")
     private Integer leavesUsed;
+
+    @Column(name = "leave_status", nullable = true)
+    private String leaveStatus = "Pending";
 
     public Leave() {
     }
@@ -93,5 +95,13 @@ public class Leave {
 
     public void setLeavesUsed(int leavesUsed) {
         this.leavesUsed = leavesUsed;
+    }
+
+    public String getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void setLeaveStatus(String leaveStatus) {
+        this.leaveStatus = leaveStatus;
     }
 }

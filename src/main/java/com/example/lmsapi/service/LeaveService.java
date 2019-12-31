@@ -45,12 +45,14 @@ public class LeaveService {
         if (leave.getReason() != null) {
             oldLeave.setReason(leave.getReason());
         }
-        if (leave.getLeavesAvailable() != null) {
-            oldLeave.setLeavesAvailable(leave.getLeavesAvailable());
-        }
-        if (leave.getLeavesUsed() != null) {
-            oldLeave.setLeavesUsed(leave.getLeavesUsed());
-        }
+//        if (leave.getLeavesAvailable() != null) {
+//            oldLeave.setLeavesAvailable(leave.getLeavesAvailable());
+//        }
+//        if (leave.getLeavesUsed() != null) {
+//            oldLeave.setLeavesUsed(leave.getLeavesUsed());
+//        }
+        oldLeave.setLeavesAvailable(oldLeave.getLeavesAvailable());
+        oldLeave.setLeavesUsed(oldLeave.getLeavesUsed());
         return leaveRepository.save(oldLeave);
     }
 
@@ -62,8 +64,7 @@ public class LeaveService {
         leave.setFromDate(leave.getFromDate());
         leave.setToDate(leave.getToDate());
         int numberOfDays = getNumberOfDaysApplied(leave.getFromDate(), leave.getToDate());
-        Integer leavesAvailable;
-        leavesAvailable = getTotalAvailableLeavesOfEmployee(leave.getEmpId());
+        Integer leavesAvailable = getTotalAvailableLeavesOfEmployee(leave.getEmpId());
         if (numberOfDays > leavesAvailable) {
             throw new LeaveException("You don't have these many ( " + numberOfDays + " ) available leaves.\n" +
                     " You have only ( " + leavesAvailable + ") leaves.");
@@ -136,8 +137,8 @@ public class LeaveService {
         Integer leavesUsed = getTotalUsedLeavesOfEmployee(leave.getEmpId());
         if (leave.getLeaveStatus() != null) {
             if (leave.getLeaveStatus().equals("Approved")) {
-                l.setLeavesUsed((int) (leavesUsed + numberOfDays));
-                l.setLeavesAvailable((int) (leavesAvailable - numberOfDays));
+                l.setLeavesUsed(leavesUsed + numberOfDays);
+                l.setLeavesAvailable(leavesAvailable - numberOfDays);
                 l.setLeaveStatus("Approved");
             } else {
                 l.setLeavesUsed(l.getLeavesUsed());

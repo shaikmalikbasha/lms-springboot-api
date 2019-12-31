@@ -17,7 +17,7 @@ public interface LeaveRepository extends JpaRepository<Leave, Long>, CrudReposit
     @Query(value = "SELECT MIN(l.leavesAvailable) FROM Leave l WHERE l.empId = :empId")
     Integer getAvailableLeavesByEmpId(Long empId);
 
-    @Query(value = "SELECT SUM(l.leavesUsed) FROM Leave l WHERE l.empId = :empId")
+    @Query(value = "SELECT SUM(l.leavesUsed) FROM Leave l WHERE l.empId = :empId WHERE l.leaveStatus = 'Approved'")
     Integer getUsedLeavesofEmployee(Long empId);
 
 //    @Query(value = "SELECT * FROM Leave WHERE id = :leaveId")
